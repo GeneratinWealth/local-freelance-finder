@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
 import { CategoryCard } from "@/components/CategoryCard";
-import { JobCard } from "@/components/JobCard";
+import { JobCardWithCurrency } from "@/components/JobCardWithCurrency";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
+import CurrencySelector, { CurrencyCode } from "@/components/CurrencySelector";
 import {
   Search,
   Wrench,
@@ -17,7 +18,6 @@ import {
   MapPin,
 } from "lucide-react";
 
-// Sample data
 const categories = [
   { icon: Wrench, title: "Plumbing", count: 124 },
   { icon: Home, title: "Handy Work", count: 98 },
@@ -97,8 +97,8 @@ const Index = () => {
   const [selectedLocation, setSelectedLocation] = useState("");
   const [jobs, setJobs] = useState(allJobs);
   const [showAiSuggestion, setShowAiSuggestion] = useState(false);
+  const [selectedCurrency, setSelectedCurrency] = useState<CurrencyCode>("USD");
 
-  // Filter jobs based on search, category, and location
   useEffect(() => {
     let filteredJobs = [...allJobs];
     
@@ -135,15 +135,21 @@ const Index = () => {
       description: "Improve your profile with AI-generated descriptions and attract more clients!",
     });
     
-    // This would be replaced with actual AI integration
     setTimeout(() => {
       setShowAiSuggestion(false);
     }, 5000);
   };
 
+  const handleCurrencyChange = (currency: CurrencyCode) => {
+    setSelectedCurrency(currency);
+    toast({
+      title: "Currency Changed",
+      description: `Showing salaries in ${currency}`,
+    });
+  };
+
   return (
     <div className="min-h-screen bg-gray-50">
-      {/* Hero Section */}
       <div className="bg-gradient-to-b from-white to-gray-50 py-20 px-4">
         <div className="container max-w-6xl mx-auto text-center space-y-8 animate-fade-in">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
@@ -153,7 +159,6 @@ const Index = () => {
             Connect with businesses and individuals in your area looking for skilled professionals
           </p>
           
-          {/* Enhanced Search Bar */}
           <div className="flex flex-col md:flex-row gap-2 max-w-2xl mx-auto">
             <div className="flex-1">
               <Input
@@ -186,9 +191,16 @@ const Index = () => {
             </Button>
           </div>
           
-          <Button variant="outline" onClick={handleAiSuggestion} className="bg-white">
-            Get AI Suggestions for Your Profile
-          </Button>
+          <div className="flex items-center justify-center gap-4">
+            <Button variant="outline" onClick={handleAiSuggestion} className="bg-white">
+              Get AI Suggestions for Your Profile
+            </Button>
+            
+            <CurrencySelector
+              selectedCurrency={selectedCurrency}
+              onCurrencyChange={handleCurrencyChange}
+            />
+          </div>
           
           {showAiSuggestion && (
             <div className="bg-white p-4 rounded-lg shadow-md text-left">
@@ -203,7 +215,6 @@ const Index = () => {
         </div>
       </div>
 
-      {/* Categories Section */}
       <section className="py-16 px-4">
         <div className="container max-w-6xl mx-auto">
           <h2 className="text-2xl font-semibold text-gray-900 mb-8 text-center">
@@ -221,7 +232,6 @@ const Index = () => {
         </div>
       </section>
 
-      {/* Featured Jobs Section */}
       <section className="py-16 px-4 bg-white">
         <div className="container max-w-6xl mx-auto">
           <div className="flex justify-between items-center mb-8">
@@ -246,7 +256,11 @@ const Index = () => {
           {jobs.length > 0 ? (
             <div className="space-y-6 animate-slide-up">
               {jobs.map((job) => (
-                <JobCard key={job.title} {...job} />
+                <JobCardWithCurrency 
+                  key={job.title} 
+                  {...job} 
+                  currency={selectedCurrency}
+                />
               ))}
             </div>
           ) : (
