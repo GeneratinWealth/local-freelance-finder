@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
 import CurrencySelector, { CurrencyCode } from "@/components/CurrencySelector";
+import { FreelancerStatus } from "@/components/StatusBadge";
 import {
   Search,
   Wrench,
@@ -48,6 +49,7 @@ const allJobs = [
     postedTime: "2h ago",
     image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=200&h=200&fit=crop",
     category: "Plumbing",
+    status: "available" as FreelancerStatus,
   },
   {
     title: "House Cleaning Professional",
@@ -58,6 +60,7 @@ const allJobs = [
     postedTime: "5h ago",
     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&h=200&fit=crop",
     category: "Cleaning",
+    status: "busy" as FreelancerStatus,
   },
   {
     title: "Experienced Hair Stylist",
@@ -68,6 +71,7 @@ const allJobs = [
     postedTime: "1d ago",
     image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=200&h=200&fit=crop",
     category: "Hair Styling",
+    status: "offline" as FreelancerStatus,
   },
   {
     title: "Babysitter for Weekends",
@@ -78,6 +82,7 @@ const allJobs = [
     postedTime: "6h ago",
     image: "https://images.unsplash.com/photo-1516627145497-ae6968895b40?w=200&h=200&fit=crop",
     category: "Baby Sitting",
+    status: "available" as FreelancerStatus,
   },
   {
     title: "Handyman for Home Repairs",
@@ -88,6 +93,7 @@ const allJobs = [
     postedTime: "12h ago",
     image: "https://images.unsplash.com/photo-1588964895597-cfccd63bc041?w=200&h=200&fit=crop",
     category: "Handy Work",
+    status: "busy" as FreelancerStatus,
   },
 ];
 
