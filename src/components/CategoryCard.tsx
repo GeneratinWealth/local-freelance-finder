@@ -5,11 +5,12 @@ interface CategoryCardProps {
   icon: LucideIcon;
   title: string;
   count: number;
+  onClick?: () => void;
 }
 
-export const CategoryCard = ({ icon: Icon, title, count }: CategoryCardProps) => {
+export const CategoryCard = ({ icon: Icon, title, count, onClick }: CategoryCardProps) => {
   return (
-    <div className="group cursor-pointer">
+    <div className="group cursor-pointer" onClick={onClick}>
       <div className="bg-white rounded-2xl p-6 shadow-sm transition-all duration-300 hover:shadow-md hover:-translate-y-1 border border-gray-100">
         <div className="flex flex-col items-center text-center space-y-3">
           <div className="p-3 bg-primary/5 rounded-xl group-hover:bg-primary/10 transition-colors">
