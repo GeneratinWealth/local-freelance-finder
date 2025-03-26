@@ -3,7 +3,7 @@ import React from "react";
 import { convertSalary } from "@/utils/currencyUtils";
 import { CurrencyCode } from "@/components/CurrencySelector";
 
-interface JobCardProps {
+interface JobCardWithCurrencyProps {
   title: string;
   company: string;
   location: string;
@@ -15,7 +15,7 @@ interface JobCardProps {
   currency: CurrencyCode;
 }
 
-export const JobCardWithCurrency: React.FC<JobCardProps> = ({
+export const JobCardWithCurrency: React.FC<JobCardWithCurrencyProps> = ({
   title,
   company,
   location,
