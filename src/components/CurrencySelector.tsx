@@ -16,7 +16,7 @@ import {
   Currency,
 } from "lucide-react";
 
-export type CurrencyCode = "USD" | "EUR" | "GBP" | "JPY" | "INR";
+export type CurrencyCode = "USD" | "EUR" | "GBP" | "JPY" | "INR" | "ZAR";
 
 export interface CurrencyOption {
   code: CurrencyCode;
@@ -31,6 +31,7 @@ export const currencies: CurrencyOption[] = [
   { code: "GBP", symbol: "£", name: "British Pound", icon: BadgePoundSterling },
   { code: "JPY", symbol: "¥", name: "Japanese Yen", icon: BadgeJapaneseYen },
   { code: "INR", symbol: "₹", name: "Indian Rupee", icon: BadgeIndianRupee },
+  { code: "ZAR", symbol: "R", name: "South African Rand", icon: Currency },
 ];
 
 interface CurrencySelectorProps {

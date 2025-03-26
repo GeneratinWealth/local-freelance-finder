@@ -8,6 +8,7 @@ const exchangeRates: Record<CurrencyCode, number> = {
   GBP: 0.79,
   JPY: 151.5,
   INR: 83.5,
+  ZAR: 18.2, // Adding ZAR exchange rate
 };
 
 // Parse a salary string like "$45-60/hr" into min and max values
@@ -56,6 +57,7 @@ export const getCurrencySymbol = (currencyCode: CurrencyCode): string => {
     case "GBP": return "£";
     case "JPY": return "¥";
     case "INR": return "₹";
+    case "ZAR": return "R"; // Adding ZAR symbol
     default: return "$";
   }
 };
