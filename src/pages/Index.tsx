@@ -1,4 +1,3 @@
-
 import { useState, useEffect } from "react";
 import { CategoryCard } from "@/components/CategoryCard";
 import { JobCard } from "@/components/JobCard";
@@ -114,7 +113,7 @@ const Index = () => {
       filteredJobs = filteredJobs.filter(job => job.category === selectedCategory);
     }
     
-    if (selectedLocation) {
+    if (selectedLocation && selectedLocation !== "all-locations") {
       filteredJobs = filteredJobs.filter(job => job.location === selectedLocation);
     }
     
@@ -173,7 +172,7 @@ const Index = () => {
                 </div>
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">All Locations</SelectItem>
+                <SelectItem value="all-locations">All Locations</SelectItem>
                 {locations.map(location => (
                   <SelectItem key={location} value={location}>
                     {location}
@@ -228,10 +227,10 @@ const Index = () => {
           <div className="flex justify-between items-center mb-8">
             <h2 className="text-2xl font-semibold text-gray-900">
               {selectedCategory ? `${selectedCategory} Jobs` : 'Featured Opportunities'}
-              {selectedLocation ? ` in ${selectedLocation}` : ''}
+              {selectedLocation && selectedLocation !== "all-locations" ? ` in ${selectedLocation}` : ''}
             </h2>
             
-            {(selectedCategory || selectedLocation) && (
+            {(selectedCategory || (selectedLocation && selectedLocation !== "all-locations")) && (
               <Button 
                 variant="outline" 
                 onClick={() => {
