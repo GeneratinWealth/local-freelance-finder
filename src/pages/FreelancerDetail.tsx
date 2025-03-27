@@ -24,6 +24,7 @@ import {
   DollarSign
 } from "lucide-react";
 import { StatusBadge } from "@/components/StatusBadge";
+import { VerificationBadge, VerificationLevel } from "@/components/VerificationBadge";
 import { toast } from "@/components/ui/use-toast";
 
 // Mock data - in a real app, this would come from an API
@@ -44,6 +45,7 @@ const mockFreelancers = [
     status: "available" as const,
     rating: 4.8,
     reviews: 32,
+    verification: "premium" as VerificationLevel,
     description: "Professional plumber with over 10 years of experience in residential and commercial plumbing. Specialized in pipe installation, repair, and maintenance.",
   },
   {
@@ -62,6 +64,7 @@ const mockFreelancers = [
     status: "busy" as const,
     rating: 4.6,
     reviews: 48,
+    verification: "verified" as VerificationLevel,
     description: "Experienced house cleaner with attention to detail. Provides thorough cleaning services for apartments, houses, and offices. Uses eco-friendly cleaning products."
   },
   {
@@ -208,6 +211,9 @@ const FreelancerDetail = () => {
                   <span className="px-3 py-1 bg-purple-50 text-purple-700 text-sm rounded-full">
                     {freelancer.type}
                   </span>
+                  {freelancer.verification && (
+                    <VerificationBadge level={freelancer.verification} />
+                  )}
                 </div>
                 
                 <p className="mt-4 text-gray-700">{freelancer.description}</p>
