@@ -20,6 +20,7 @@ import {
   Calendar,
   Briefcase,
   MapPin,
+  Globe,
 } from "lucide-react";
 
 const categories = [
@@ -33,13 +34,40 @@ const categories = [
 ];
 
 const locations = [
-  "Brooklyn, NY",
-  "Manhattan, NY",
-  "Queens, NY",
-  "Bronx, NY",
-  "Staten Island, NY",
-  "Jersey City, NJ",
-  "Hoboken, NJ",
+  // North America
+  "Brooklyn, NY, USA",
+  "Manhattan, NY, USA",
+  "Queens, NY, USA",
+  "Bronx, NY, USA",
+  "Staten Island, NY, USA",
+  "Jersey City, NJ, USA",
+  "Hoboken, NJ, USA",
+  // Europe
+  "London, UK",
+  "Paris, France",
+  "Berlin, Germany",
+  "Rome, Italy",
+  "Madrid, Spain",
+  "Amsterdam, Netherlands",
+  // Asia
+  "Tokyo, Japan",
+  "Singapore, Singapore",
+  "Hong Kong, China",
+  "Mumbai, India",
+  "Bangkok, Thailand",
+  "Seoul, South Korea",
+  // Australia & Oceania
+  "Sydney, Australia",
+  "Melbourne, Australia",
+  "Auckland, New Zealand",
+  // Africa
+  "Cape Town, South Africa",
+  "Nairobi, Kenya",
+  "Cairo, Egypt",
+  // South America
+  "Rio de Janeiro, Brazil",
+  "Buenos Aires, Argentina",
+  "Lima, Peru",
 ];
 
 const allJobs = [
@@ -47,7 +75,7 @@ const allJobs = [
     id: "1",
     title: "Professional Plumber Needed",
     company: "HomeServices Co.",
-    location: "Brooklyn, NY",
+    location: "Brooklyn, NY, USA",
     salary: "$45-60/hr",
     type: "Contract",
     postedTime: "2h ago",
@@ -60,7 +88,7 @@ const allJobs = [
     id: "2",
     title: "House Cleaning Professional",
     company: "CleanPro Inc.",
-    location: "Manhattan, NY",
+    location: "London, UK",
     salary: "$30-40/hr",
     type: "Part-time",
     postedTime: "5h ago",
@@ -73,7 +101,7 @@ const allJobs = [
     id: "3",
     title: "Experienced Hair Stylist",
     company: "Style Studio",
-    location: "Queens, NY",
+    location: "Paris, France",
     salary: "$50-70/hr",
     type: "Full-time",
     postedTime: "1d ago",
@@ -86,7 +114,7 @@ const allJobs = [
     id: "4",
     title: "Babysitter for Weekends",
     company: "Family Care",
-    location: "Bronx, NY",
+    location: "Berlin, Germany",
     salary: "$25-35/hr",
     type: "Part-time",
     postedTime: "6h ago",
@@ -99,7 +127,7 @@ const allJobs = [
     id: "5",
     title: "Handyman for Home Repairs",
     company: "Urban Fixers",
-    location: "Jersey City, NJ",
+    location: "Tokyo, Japan",
     salary: "$40-55/hr",
     type: "Contract",
     postedTime: "12h ago",
@@ -107,6 +135,32 @@ const allJobs = [
     category: "Handy Work",
     status: "busy" as FreelancerStatus,
     distance: "6.3 miles",
+  },
+  {
+    id: "6",
+    title: "Event Planner for Corporate Function",
+    company: "EventPro",
+    location: "Sydney, Australia",
+    salary: "$60-80/hr",
+    type: "Contract",
+    postedTime: "1d ago",
+    image: "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?w=200&h=200&fit=crop",
+    category: "Event Planning",
+    status: "available" as FreelancerStatus,
+    distance: "7.8 miles",
+  },
+  {
+    id: "7",
+    title: "Business Consultant",
+    company: "Strategy Partners",
+    location: "Singapore, Singapore",
+    salary: "$85-100/hr",
+    type: "Full-time",
+    postedTime: "2d ago",
+    image: "https://images.unsplash.com/photo-1573497620053-ea5300f94f21?w=200&h=200&fit=crop",
+    category: "Business Services",
+    status: "offline" as FreelancerStatus,
+    distance: "8.4 miles",
   },
 ];
 
@@ -187,7 +241,7 @@ const Index = () => {
           </div>
           
           <p className="text-xl text-white max-w-2xl mx-auto">
-            Connect with skilled professionals in your area
+            Connect with skilled professionals around the world
           </p>
           
           <div className="flex flex-col md:flex-row gap-2 max-w-2xl mx-auto">
@@ -203,13 +257,56 @@ const Index = () => {
             <Select value={selectedLocation} onValueChange={setSelectedLocation}>
               <SelectTrigger className="h-12 w-full md:w-40">
                 <div className="flex items-center gap-2">
-                  <MapPin className="h-4 w-4" />
+                  <Globe className="h-4 w-4" />
                   <SelectValue placeholder="Location" />
                 </div>
               </SelectTrigger>
-              <SelectContent>
+              <SelectContent className="max-h-[50vh] overflow-y-auto">
                 <SelectItem value="all-locations">All Locations</SelectItem>
-                {locations.map(location => (
+                <SelectItem value="north-america-locations" disabled className="font-semibold text-primary">
+                  North America
+                </SelectItem>
+                {locations.slice(0, 7).map(location => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+                <SelectItem value="europe-locations" disabled className="font-semibold text-primary">
+                  Europe
+                </SelectItem>
+                {locations.slice(7, 13).map(location => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+                <SelectItem value="asia-locations" disabled className="font-semibold text-primary">
+                  Asia
+                </SelectItem>
+                {locations.slice(13, 19).map(location => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+                <SelectItem value="australia-oceania-locations" disabled className="font-semibold text-primary">
+                  Australia & Oceania
+                </SelectItem>
+                {locations.slice(19, 22).map(location => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+                <SelectItem value="africa-locations" disabled className="font-semibold text-primary">
+                  Africa
+                </SelectItem>
+                {locations.slice(22, 25).map(location => (
+                  <SelectItem key={location} value={location}>
+                    {location}
+                  </SelectItem>
+                ))}
+                <SelectItem value="south-america-locations" disabled className="font-semibold text-primary">
+                  South America
+                </SelectItem>
+                {locations.slice(25).map(location => (
                   <SelectItem key={location} value={location}>
                     {location}
                   </SelectItem>
