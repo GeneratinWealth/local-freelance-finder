@@ -2,7 +2,7 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { ArrowLeft, BadgeCheck } from "lucide-react";
+import { ArrowLeft, BadgeCheck, Sparkles } from "lucide-react";
 import ClientRegistrationForm from "@/components/ClientRegistrationForm";
 
 const BecomeClient = () => {
@@ -34,6 +34,18 @@ const BecomeClient = () => {
                 >
                   Learn more
                 </Button>
+              </p>
+            </div>
+          </div>
+        </div>
+        
+        <div className="mb-6 bg-purple-50 border border-purple-100 p-4 rounded-lg">
+          <div className="flex gap-2">
+            <Sparkles className="h-5 w-5 text-purple-500 flex-shrink-0 mt-0.5" />
+            <div>
+              <h3 className="font-medium text-purple-800">AI-Powered Assistance</h3>
+              <p className="text-sm text-purple-700">
+                Our platform uses AI to help you create better job descriptions, find the perfect freelancer match, and keep your content up to date with current legislation.
               </p>
             </div>
           </div>

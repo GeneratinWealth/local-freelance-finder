@@ -11,6 +11,7 @@ import Policies from "./pages/Policies";
 import Contact from "./pages/Contact";
 import BecomeClient from "./pages/BecomeClient";
 import Verification from "./pages/Verification";
+import Help from "./pages/Help";
 
 const queryClient = new QueryClient();
 
@@ -27,6 +28,7 @@ const App = () => (
           <Route path="/contact" element={<Contact />} />
           <Route path="/become-client" element={<BecomeClient />} />
           <Route path="/verification" element={<Verification />} />
+          <Route path="/help" element={<Help />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
           <Route path="*" element={<NotFound />} />
         </Routes>

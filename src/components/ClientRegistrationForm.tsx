@@ -24,6 +24,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { countries } from "@/data/countries";
 import { languages } from "@/data/languages";
+import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
 const formSchema = z.object({
   fullName: z.string().min(2, {
@@ -44,6 +45,9 @@ const formSchema = z.object({
   language: z.string().min(1, {
     message: "Please select your preferred language.",
   }),
+  gender: z.enum(["male", "female"], {
+    message: "Please select your gender.",
+  }),
 });
 
 const ClientRegistrationForm = () => {
@@ -57,6 +61,7 @@ const ClientRegistrationForm = () => {
       phoneCode: "",
       phoneNumber: "",
       language: "",
+      gender: undefined,
     },
   });
 
@@ -109,6 +114,41 @@ const ClientRegistrationForm = () => {
                 <FormLabel>Email</FormLabel>
                 <FormControl>
                   <Input placeholder="your@email.com" {...field} />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+
+          <FormField
+            control={form.control}
+            name="gender"
+            render={({ field }) => (
+              <FormItem className="space-y-3">
+                <FormLabel>Gender</FormLabel>
+                <FormControl>
+                  <RadioGroup
+                    onValueChange={field.onChange}
+                    defaultValue={field.value}
+                    className="flex space-x-4"
+                  >
+                    <FormItem className="flex items-center space-x-2 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="male" />
+                      </FormControl>
+                      <FormLabel className="font-normal cursor-pointer">
+                        Male
+                      </FormLabel>
+                    </FormItem>
+                    <FormItem className="flex items-center space-x-2 space-y-0">
+                      <FormControl>
+                        <RadioGroupItem value="female" />
+                      </FormControl>
+                      <FormLabel className="font-normal cursor-pointer">
+                        Female
+                      </FormLabel>
+                    </FormItem>
+                  </RadioGroup>
                 </FormControl>
                 <FormMessage />
               </FormItem>

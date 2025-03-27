@@ -10,7 +10,7 @@ import {
   DrawerFooter 
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { Settings, Info, Phone, ChevronDown } from "lucide-react";
+import { Settings, Info, Phone, HelpCircle, ChevronDown } from "lucide-react";
 import { Link } from "react-router-dom";
 import CurrencySelector, { CurrencyCode } from "@/components/CurrencySelector";
 import LanguageSelector from "@/components/LanguageSelector";
@@ -71,6 +71,13 @@ export const DrawerMenu: React.FC<DrawerMenuProps> = ({
               >
                 <Phone className="h-4 w-4 mr-2 text-purple-500" />
                 <span className="text-sm">Contact Us</span>
+              </Link>
+              <Link 
+                to="/help" 
+                className="flex items-center p-2 rounded-md hover:bg-purple-100 transition-colors"
+              >
+                <HelpCircle className="h-4 w-4 mr-2 text-purple-500" />
+                <span className="text-sm">Help Center</span>
               </Link>
             </div>
           </div>
