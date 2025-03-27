@@ -76,6 +76,29 @@ const Policies = () => {
                   In the event of a dispute between a freelancer and a client, we encourage users to first attempt to resolve the issue directly. If that is not possible, Freelancer provides a dispute resolution process. We will review the circumstances of the dispute and make a determination based on our policies and the information provided by both parties.
                 </p>
               </section>
+
+              <section>
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">Limitation of Liability</h2>
+                <p className="text-gray-700 mb-3">
+                  Pursuant to Section 230 of the Communications Decency Act and applicable international laws including the Electronic Commerce Directive 2000/31/EC of the European Parliament and of the Council, Freelancer shall not be held liable for any physical altercations, disputes, or other in-person conflicts that may occur between users of our platform.
+                </p>
+                <p className="text-gray-700 mb-3">
+                  By using our services, you acknowledge and agree that Freelancer is an interactive computer service provider that enables the creation and development of information provided by another information content provider, and as such, cannot be treated as the publisher or speaker of any information provided by another information content provider.
+                </p>
+                <p className="text-gray-700">
+                  To the maximum extent permitted by applicable law, Freelancer, its affiliates, and their respective officers, employees, agents, partners and licensors shall not be liable for any indirect, incidental, special, consequential or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the services.
+                </p>
+              </section>
+              
+              <section>
+                <h2 className="text-xl font-semibold text-gray-900 mb-4">International Use</h2>
+                <p className="text-gray-700 mb-3">
+                  Freelancer is a global platform operating across multiple jurisdictions. Users are responsible for ensuring that their use of our platform complies with all applicable local, state, national, and international laws and regulations.
+                </p>
+                <p className="text-gray-700">
+                  Users acknowledge that different countries have different laws regarding online platforms, consumer protection, data privacy, and business transactions. By using our platform, you agree to comply with all relevant laws in your jurisdiction as well as in the jurisdictions of any clients or freelancers with whom you interact through our platform.
+                </p>
+              </section>
             </div>
           </div>
         </div>
