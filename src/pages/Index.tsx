@@ -1,3 +1,4 @@
+
 import { useState, useEffect } from "react";
 import { CategoryCard } from "@/components/CategoryCard";
 import { JobCardWithCurrency } from "@/components/JobCardWithCurrency";
@@ -5,8 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { toast } from "@/components/ui/use-toast";
-import CurrencySelector, { CurrencyCode } from "@/components/CurrencySelector";
+import { CurrencyCode } from "@/components/CurrencySelector";
 import { FreelancerStatus } from "@/components/StatusBadge";
+import { DrawerMenu } from "@/components/DrawerMenu";
+import { AnimatedLogo } from "@/components/AnimatedLogo";
 import {
   Search,
   Wrench,
@@ -41,6 +44,7 @@ const locations = [
 
 const allJobs = [
   {
+    id: "1",
     title: "Professional Plumber Needed",
     company: "HomeServices Co.",
     location: "Brooklyn, NY",
@@ -50,8 +54,10 @@ const allJobs = [
     image: "https://images.unsplash.com/photo-1621905251189-08b45d6a269e?w=200&h=200&fit=crop",
     category: "Plumbing",
     status: "available" as FreelancerStatus,
+    distance: "2.5 miles",
   },
   {
+    id: "2",
     title: "House Cleaning Professional",
     company: "CleanPro Inc.",
     location: "Manhattan, NY",
@@ -61,8 +67,10 @@ const allJobs = [
     image: "https://images.unsplash.com/photo-1581578731548-c64695cc6952?w=200&h=200&fit=crop",
     category: "Cleaning",
     status: "busy" as FreelancerStatus,
+    distance: "3.2 miles",
   },
   {
+    id: "3",
     title: "Experienced Hair Stylist",
     company: "Style Studio",
     location: "Queens, NY",
@@ -72,8 +80,10 @@ const allJobs = [
     image: "https://images.unsplash.com/photo-1560066984-138dadb4c035?w=200&h=200&fit=crop",
     category: "Hair Styling",
     status: "offline" as FreelancerStatus,
+    distance: "5.7 miles",
   },
   {
+    id: "4",
     title: "Babysitter for Weekends",
     company: "Family Care",
     location: "Bronx, NY",
@@ -83,8 +93,10 @@ const allJobs = [
     image: "https://images.unsplash.com/photo-1516627145497-ae6968895b40?w=200&h=200&fit=crop",
     category: "Baby Sitting",
     status: "available" as FreelancerStatus,
+    distance: "4.1 miles",
   },
   {
+    id: "5",
     title: "Handyman for Home Repairs",
     company: "Urban Fixers",
     location: "Jersey City, NJ",
@@ -94,6 +106,7 @@ const allJobs = [
     image: "https://images.unsplash.com/photo-1588964895597-cfccd63bc041?w=200&h=200&fit=crop",
     category: "Handy Work",
     status: "busy" as FreelancerStatus,
+    distance: "6.3 miles",
   },
 ];
 
@@ -156,13 +169,25 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="bg-gradient-to-b from-white to-gray-50 py-20 px-4">
+      <div className="bg-gradient-to-r from-purple-500 via-orange-400 to-blue-500 py-20 px-4">
         <div className="container max-w-6xl mx-auto text-center space-y-8 animate-fade-in">
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900">
-            Find Local Freelance Opportunities
-          </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
-            Connect with businesses and individuals in your area looking for skilled professionals
+          <div className="flex items-center justify-between">
+            <DrawerMenu
+              selectedCurrency={selectedCurrency}
+              onCurrencyChange={handleCurrencyChange}
+            />
+            
+            <h1 className="text-4xl md:text-5xl font-bold text-white">
+              Freelancer
+            </h1>
+            
+            <div className="w-9 h-9">
+              {/* Empty div for spacing */}
+            </div>
+          </div>
+          
+          <p className="text-xl text-white max-w-2xl mx-auto">
+            Connect with skilled professionals in your area
           </p>
           
           <div className="flex flex-col md:flex-row gap-2 max-w-2xl mx-auto">
@@ -201,11 +226,6 @@ const Index = () => {
             <Button variant="outline" onClick={handleAiSuggestion} className="bg-white">
               Get AI Suggestions for Your Profile
             </Button>
-            
-            <CurrencySelector
-              selectedCurrency={selectedCurrency}
-              onCurrencyChange={handleCurrencyChange}
-            />
           </div>
           
           {showAiSuggestion && (
@@ -263,7 +283,7 @@ const Index = () => {
             <div className="space-y-6 animate-slide-up">
               {jobs.map((job) => (
                 <JobCardWithCurrency 
-                  key={job.title} 
+                  key={job.id} 
                   {...job} 
                   currency={selectedCurrency}
                 />
@@ -286,6 +306,8 @@ const Index = () => {
           )}
         </div>
       </section>
+      
+      <AnimatedLogo />
     </div>
   );
 };
