@@ -1,4 +1,3 @@
-
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -16,7 +15,6 @@ import {
 } from "@/components/ui/alert-dialog";
 import { 
   MessageSquare, 
-  MapPin, 
   Calendar, 
   Star,
   ArrowLeft,
@@ -26,6 +24,8 @@ import {
 import { StatusBadge } from "@/components/StatusBadge";
 import { VerificationBadge, VerificationLevel } from "@/components/VerificationBadge";
 import { toast } from "@/components/ui/use-toast";
+import LocationMap from "@/components/LocationMap";
+import FreelancerTimeline from "@/components/FreelancerTimeline";
 
 // Mock data - in a real app, this would come from an API
 const mockFreelancers = [
@@ -34,7 +34,7 @@ const mockFreelancers = [
     title: "Professional Plumber Needed",
     name: "John Smith",
     company: "HomeServices Co.",
-    location: "Brooklyn, NY",
+    location: "Brooklyn, NY, USA",
     distance: "2.5 miles",
     salary: "$45-60/hr",
     rate: "$50/hr",
@@ -47,13 +47,14 @@ const mockFreelancers = [
     reviews: 32,
     verification: "premium" as VerificationLevel,
     description: "Professional plumber with over 10 years of experience in residential and commercial plumbing. Specialized in pipe installation, repair, and maintenance.",
+    estimatedArrival: "30 minutes",
   },
   {
     id: "2",
     title: "House Cleaning Professional",
     name: "Maria Garcia",
     company: "CleanPro Inc.",
-    location: "Manhattan, NY",
+    location: "Manhattan, NY, USA",
     distance: "3.2 miles",
     salary: "$30-40/hr",
     rate: "$35/hr",
@@ -65,7 +66,8 @@ const mockFreelancers = [
     rating: 4.6,
     reviews: 48,
     verification: "verified" as VerificationLevel,
-    description: "Experienced house cleaner with attention to detail. Provides thorough cleaning services for apartments, houses, and offices. Uses eco-friendly cleaning products."
+    description: "Experienced house cleaner with attention to detail. Provides thorough cleaning services for apartments, houses, and offices. Uses eco-friendly cleaning products.",
+    currentJobEndsAt: "in 2 hours",
   },
   {
     id: "3",
@@ -197,10 +199,6 @@ const FreelancerDetail = () => {
                 </div>
                 
                 <div className="mt-4 flex flex-wrap gap-2">
-                  <span className="px-3 py-1 bg-gray-100 text-gray-800 text-sm rounded-full flex items-center">
-                    <MapPin className="h-3 w-3 mr-1" /> 
-                    {freelancer.location} ({freelancer.distance})
-                  </span>
                   <span className="px-3 py-1 bg-blue-50 text-blue-700 text-sm rounded-full">
                     {freelancer.category}
                   </span>
@@ -218,6 +216,19 @@ const FreelancerDetail = () => {
                 
                 <p className="mt-4 text-gray-700">{freelancer.description}</p>
               </div>
+            </div>
+            
+            <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+              <LocationMap 
+                address={freelancer.location} 
+                distance={freelancer.distance} 
+              />
+              
+              <FreelancerTimeline 
+                status={freelancer.status} 
+                estimatedArrival={freelancer.estimatedArrival} 
+                currentJobEndsAt={freelancer.currentJobEndsAt} 
+              />
             </div>
             
             <div className="mt-8 border-t border-gray-200 pt-6">
