@@ -5,7 +5,7 @@ import { CurrencyCode } from "@/components/CurrencySelector";
 import { StatusBadge, FreelancerStatus } from "@/components/StatusBadge";
 import { MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 interface JobCardWithCurrencyProps {
   title: string;
@@ -37,10 +37,10 @@ export const JobCardWithCurrency: React.FC<JobCardWithCurrencyProps> = ({
   id,
 }) => {
   const convertedSalary = convertSalary(salary, "USD", currency);
-  const navigate = useNavigate();
-
+  
+  // Handle the navigation in a way that doesn't break if used outside Router context
   const handleNegotiate = () => {
-    navigate(`/freelancer/${id}`);
+    window.location.href = `/freelancer/${id}`;
   };
 
   return (
