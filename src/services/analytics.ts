@@ -1,4 +1,3 @@
-
 // Enhanced analytics service with privacy controls and security improvements
 
 type EventCategory = 
@@ -8,7 +7,8 @@ type EventCategory =
   | 'search' 
   | 'verification'
   | 'error'
-  | 'security';
+  | 'security'
+  | 'system';
 
 interface AnalyticsEvent {
   category: EventCategory;
