@@ -13,6 +13,7 @@ import Contact from "./pages/Contact";
 import BecomeClient from "./pages/BecomeClient";
 import Verification from "./pages/Verification";
 import Help from "./pages/Help";
+import Auth from "./pages/Auth";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -32,6 +33,7 @@ const App = () => (
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Index />} />
+            <Route path="/auth" element={<Auth />} />
             <Route path="/freelancer/:id" element={<FreelancerDetail />} />
             <Route path="/policies" element={<Policies />} />
             <Route path="/contact" element={<Contact />} />
