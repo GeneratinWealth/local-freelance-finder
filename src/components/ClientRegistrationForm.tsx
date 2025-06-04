@@ -25,26 +25,36 @@ import { Input } from "@/components/ui/input";
 import { countries } from "@/data/countries";
 import { languages } from "@/data/languages";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+import { sanitizeInput } from "@/utils/securityUtils";
+import { analytics } from "@/services/analytics";
 
+// Enhanced validation schema with security considerations
 const formSchema = z.object({
-  fullName: z.string().min(2, {
-    message: "Full name must be at least 2 characters.",
-  }),
-  email: z.string().email({
-    message: "Please enter a valid email address.",
-  }),
-  country: z.string().min(1, {
-    message: "Please select your country.",
-  }),
-  phoneCode: z.string().min(1, {
-    message: "Please select your country code.",
-  }),
-  phoneNumber: z.string().min(5, {
-    message: "Phone number must be at least 5 digits.",
-  }),
-  language: z.string().min(1, {
-    message: "Please select your preferred language.",
-  }),
+  fullName: z.string()
+    .min(2, { message: "Full name must be at least 2 characters." })
+    .max(100, { message: "Full name must not exceed 100 characters." })
+    .regex(/^[a-zA-Z\s\-'.]+$/, { message: "Full name contains invalid characters." }),
+  email: z.string()
+    .email({ message: "Please enter a valid email address." })
+    .max(254, { message: "Email address is too long." })
+    .toLowerCase(),
+  country: z.string()
+    .min(1, { message: "Please select your country." })
+    .refine((val) => countries.some(country => country.code === val), {
+      message: "Please select a valid country.",
+    }),
+  phoneCode: z.string()
+    .min(1, { message: "Please select your country code." })
+    .regex(/^\+\d{1,4}$/, { message: "Invalid phone code format." }),
+  phoneNumber: z.string()
+    .min(5, { message: "Phone number must be at least 5 digits." })
+    .max(15, { message: "Phone number must not exceed 15 digits." })
+    .regex(/^\d+$/, { message: "Phone number must contain only digits." }),
+  language: z.string()
+    .min(1, { message: "Please select your preferred language." })
+    .refine((val) => languages.some(lang => lang.code === val), {
+      message: "Please select a valid language.",
+    }),
   gender: z.enum(["male", "female"], {
     message: "Please select your gender.",
   }),
@@ -65,22 +75,76 @@ const ClientRegistrationForm = () => {
     },
   });
 
-  const onSubmit = (values: z.infer<typeof formSchema>) => {
-    console.log(values);
-    // Here we would typically send the data to an API
-    toast({
-      title: "Registration Successful",
-      description: "Your account has been created successfully.",
-    });
-    navigate("/");
+  const onSubmit = async (values: z.infer<typeof formSchema>) => {
+    try {
+      // Sanitize all input values
+      const sanitizedValues = {
+        fullName: sanitizeInput(values.fullName),
+        email: sanitizeInput(values.email),
+        country: sanitizeInput(values.country),
+        phoneCode: sanitizeInput(values.phoneCode),
+        phoneNumber: sanitizeInput(values.phoneNumber),
+        language: sanitizeInput(values.language),
+        gender: values.gender,
+      };
+
+      console.log("Sanitized registration data:", sanitizedValues);
+
+      // Track registration attempt
+      analytics.trackEvent({
+        category: 'registration',
+        action: 'client_registration_attempt',
+        label: sanitizedValues.country
+      });
+
+      // Here we would typically send the data to a secure API
+      // For now, simulate successful registration
+      await new Promise(resolve => setTimeout(resolve, 1000));
+
+      // Track successful registration
+      analytics.trackEvent({
+        category: 'registration',
+        action: 'client_registration_success',
+        label: sanitizedValues.country
+      });
+
+      toast({
+        title: "Registration Successful",
+        description: "Your account has been created successfully. Please check your email for verification.",
+      });
+
+      // Clear form data from memory
+      form.reset();
+      
+      navigate("/");
+    } catch (error) {
+      console.error("Registration error:", error);
+      
+      // Track registration failure
+      analytics.trackEvent({
+        category: 'error',
+        action: 'client_registration_failure',
+        label: error instanceof Error ? error.message : 'unknown_error'
+      });
+
+      toast({
+        title: "Registration Failed",
+        description: "There was an error creating your account. Please try again.",
+        variant: "destructive",
+      });
+    }
   };
 
-  // When country changes, update the phone code
+  // Secure country change handler with validation
   const handleCountryChange = (value: string) => {
-    form.setValue("country", value);
-    const selectedCountry = countries.find(country => country.code === value);
+    const sanitizedValue = sanitizeInput(value);
+    const selectedCountry = countries.find(country => country.code === sanitizedValue);
+    
     if (selectedCountry) {
+      form.setValue("country", sanitizedValue);
       form.setValue("phoneCode", selectedCountry.phoneCode);
+    } else {
+      console.warn("Invalid country selection attempted:", value);
     }
   };
 
@@ -99,7 +163,12 @@ const ClientRegistrationForm = () => {
               <FormItem>
                 <FormLabel>Full Name</FormLabel>
                 <FormControl>
-                  <Input placeholder="Enter your full name" {...field} />
+                  <Input 
+                    placeholder="Enter your full name" 
+                    {...field}
+                    maxLength={100}
+                    autoComplete="name"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -113,7 +182,13 @@ const ClientRegistrationForm = () => {
               <FormItem>
                 <FormLabel>Email</FormLabel>
                 <FormControl>
-                  <Input placeholder="your@email.com" {...field} />
+                  <Input 
+                    placeholder="your@email.com" 
+                    type="email"
+                    {...field}
+                    maxLength={254}
+                    autoComplete="email"
+                  />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -194,7 +269,11 @@ const ClientRegistrationForm = () => {
                 <FormItem className="w-1/3">
                   <FormLabel>Code</FormLabel>
                   <FormControl>
-                    <Input readOnly {...field} />
+                    <Input 
+                      readOnly 
+                      {...field}
+                      autoComplete="tel-country-code"
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -211,7 +290,9 @@ const ClientRegistrationForm = () => {
                     <Input 
                       type="tel" 
                       placeholder="Phone number" 
-                      {...field} 
+                      {...field}
+                      maxLength={15}
+                      autoComplete="tel-national"
                     />
                   </FormControl>
                   <FormMessage />
@@ -251,8 +332,9 @@ const ClientRegistrationForm = () => {
           <Button 
             type="submit" 
             className="w-full bg-gradient-to-r from-purple-600 via-orange-500 to-blue-600 hover:from-purple-700 hover:via-orange-600 hover:to-blue-700"
+            disabled={form.formState.isSubmitting}
           >
-            Register as Client
+            {form.formState.isSubmitting ? "Creating Account..." : "Register as Client"}
           </Button>
         </form>
       </Form>
