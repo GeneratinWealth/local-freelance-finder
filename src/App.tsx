@@ -5,6 +5,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { AuthProvider } from "./contexts/AuthContext";
 import Index from "./pages/Index";
 import NotFound from "./pages/NotFound";
 import FreelancerDetail from "./pages/FreelancerDetail";
@@ -30,20 +31,22 @@ const App = () => (
       <Toaster />
       <Sonner />
       <ErrorBoundary>
-        <BrowserRouter>
-          <Routes>
-            <Route path="/" element={<Index />} />
-            <Route path="/auth" element={<Auth />} />
-            <Route path="/freelancer/:id" element={<FreelancerDetail />} />
-            <Route path="/policies" element={<Policies />} />
-            <Route path="/contact" element={<Contact />} />
-            <Route path="/become-client" element={<BecomeClient />} />
-            <Route path="/verification" element={<Verification />} />
-            <Route path="/help" element={<Help />} />
-            {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
-            <Route path="*" element={<NotFound />} />
-          </Routes>
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route path="/" element={<Index />} />
+              <Route path="/auth" element={<Auth />} />
+              <Route path="/freelancer/:id" element={<FreelancerDetail />} />
+              <Route path="/policies" element={<Policies />} />
+              <Route path="/contact" element={<Contact />} />
+              <Route path="/become-client" element={<BecomeClient />} />
+              <Route path="/verification" element={<Verification />} />
+              <Route path="/help" element={<Help />} />
+              {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
+              <Route path="*" element={<NotFound />} />
+            </Routes>
+          </BrowserRouter>
+        </AuthProvider>
       </ErrorBoundary>
     </TooltipProvider>
   </QueryClientProvider>

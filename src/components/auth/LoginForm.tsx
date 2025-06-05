@@ -10,6 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useToast } from '@/hooks/use-toast';
 import { sanitizeInput, isValidEmail } from '@/utils/securityUtils';
 import { Eye, EyeOff } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 const loginSchema = z.object({
   email: z.string().email('Please enter a valid email address'),
@@ -22,6 +24,7 @@ type LoginFormData = z.infer<typeof loginSchema>;
 const LoginForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const form = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
@@ -53,11 +56,30 @@ const LoginForm = () => {
         rememberMe: data.rememberMe 
       });
 
-      // TODO: Replace with actual authentication logic
-      toast({
-        title: "Login successful!",
-        description: "Welcome back to FreelanceHub.",
+      const { data: authData, error } = await supabase.auth.signInWithPassword({
+        email: sanitizedEmail,
+        password: sanitizedPassword,
       });
+
+      if (error) {
+        console.error('Login error:', error);
+        toast({
+          title: "Login failed",
+          description: error.message || "Please check your credentials and try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (authData.user) {
+        toast({
+          title: "Login successful!",
+          description: "Welcome back to FreelanceHub.",
+        });
+        
+        // Redirect to home page
+        navigate('/');
+      }
       
     } catch (error) {
       console.error('Login error:', error);

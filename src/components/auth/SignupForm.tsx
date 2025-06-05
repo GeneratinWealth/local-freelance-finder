@@ -10,6 +10,8 @@ import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from '
 import { useToast } from '@/hooks/use-toast';
 import { sanitizeInput, isValidEmail } from '@/utils/securityUtils';
 import { Eye, EyeOff } from 'lucide-react';
+import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
 
 const signupSchema = z.object({
   firstName: z.string().min(2, 'First name must be at least 2 characters'),
@@ -21,6 +23,9 @@ const signupSchema = z.object({
     .regex(/(?=.*[A-Z])/, 'Password must contain at least one uppercase letter')
     .regex(/(?=.*\d)/, 'Password must contain at least one number'),
   confirmPassword: z.string(),
+  userType: z.enum(['freelancer', 'client'], {
+    required_error: 'Please select if you are a freelancer or client',
+  }),
   agreeToTerms: z.boolean().refine(val => val === true, 'You must agree to the terms'),
 }).refine((data) => data.password === data.confirmPassword, {
   message: "Passwords don't match",
@@ -33,6 +38,7 @@ const SignupForm = () => {
   const [showPassword, setShowPassword] = React.useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = React.useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
   const form = useForm<SignupFormData>({
     resolver: zodResolver(signupSchema),
@@ -42,6 +48,7 @@ const SignupForm = () => {
       email: '',
       password: '',
       confirmPassword: '',
+      userType: 'client',
       agreeToTerms: false,
     },
   });
@@ -54,6 +61,7 @@ const SignupForm = () => {
         lastName: sanitizeInput(data.lastName),
         email: sanitizeInput(data.email),
         password: sanitizeInput(data.password),
+        userType: data.userType,
       };
 
       // Validate email format
@@ -70,13 +78,39 @@ const SignupForm = () => {
         firstName: sanitizedData.firstName,
         lastName: sanitizedData.lastName,
         email: sanitizedData.email,
+        userType: sanitizedData.userType,
       });
 
-      // TODO: Replace with actual authentication logic
-      toast({
-        title: "Account created!",
-        description: "Welcome to FreelanceHub. Please check your email to verify your account.",
+      const { data: authData, error } = await supabase.auth.signUp({
+        email: sanitizedData.email,
+        password: sanitizedData.password,
+        options: {
+          data: {
+            full_name: `${sanitizedData.firstName} ${sanitizedData.lastName}`,
+            user_type: sanitizedData.userType,
+          },
+        },
       });
+
+      if (error) {
+        console.error('Signup error:', error);
+        toast({
+          title: "Signup failed",
+          description: error.message || "Something went wrong. Please try again.",
+          variant: "destructive",
+        });
+        return;
+      }
+
+      if (authData.user) {
+        toast({
+          title: "Account created!",
+          description: "Welcome to FreelanceHub. Please check your email to verify your account.",
+        });
+        
+        // Redirect to home page
+        navigate('/');
+      }
       
     } catch (error) {
       console.error('Signup error:', error);
@@ -142,6 +176,41 @@ const SignupForm = () => {
                   {...field}
                   className="h-12"
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="userType"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>I am a</FormLabel>
+              <FormControl>
+                <div className="flex gap-4">
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      value="client"
+                      checked={field.value === 'client'}
+                      onChange={() => field.onChange('client')}
+                      className="h-4 w-4 text-orange-600 focus:ring-orange-500"
+                    />
+                    <span className="text-sm">Client (hiring freelancers)</span>
+                  </label>
+                  <label className="flex items-center space-x-2 cursor-pointer">
+                    <input
+                      type="radio"
+                      value="freelancer"
+                      checked={field.value === 'freelancer'}
+                      onChange={() => field.onChange('freelancer')}
+                      className="h-4 w-4 text-orange-600 focus:ring-orange-500"
+                    />
+                    <span className="text-sm">Freelancer (offering services)</span>
+                  </label>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>
