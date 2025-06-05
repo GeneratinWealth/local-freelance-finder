@@ -1,3 +1,4 @@
+
 import React, { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
@@ -22,8 +23,8 @@ import {
   DollarSign
 } from "lucide-react";
 import { StatusBadge } from "@/components/StatusBadge";
-import { VerificationBadge, VerificationLevel } from "@/components/VerificationBadge";
-import { toast } from "@/components/ui/use-toast";
+import VerificationBadge, { VerificationLevel } from "@/components/VerificationBadge";
+import { toast } from "@/hooks/use-toast";
 import LocationMap from "@/components/LocationMap";
 import FreelancerTimeline from "@/components/FreelancerTimeline";
 
@@ -266,7 +267,7 @@ const FreelancerDetail = () => {
                 <AlertDialog open={showConfirmation} onOpenChange={setShowConfirmation}>
                   <AlertDialogTrigger asChild>
                     <Button 
-                      className="w-full sm:w-auto bg-gradient-to-r from-purple-500 via-orange-400 to-blue-500 text-white hover:opacity-90"
+                      className="w-full sm:w-auto bg-green-600 text-white hover:bg-green-700"
                       onClick={handleNegotiate}
                     >
                       <MessageSquare className="mr-2 h-4 w-4" />
@@ -285,7 +286,7 @@ const FreelancerDetail = () => {
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction 
                         onClick={handleConfirm}
-                        className="bg-gradient-to-r from-purple-500 via-orange-400 to-blue-500 text-white hover:opacity-90"
+                        className="bg-green-600 text-white hover:bg-green-700"
                       >
                         <CheckCircle className="mr-2 h-4 w-4" />
                         Confirm Offer

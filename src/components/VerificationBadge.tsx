@@ -3,18 +3,20 @@ import React from 'react';
 import { Badge } from '@/components/ui/badge';
 import { Shield } from 'lucide-react';
 
+export type VerificationLevel = 'verified' | 'premium' | 'none';
+
 interface VerificationBadgeProps {
-  isVerified: boolean;
+  level: VerificationLevel;
   size?: 'sm' | 'md' | 'lg';
   showIcon?: boolean;
 }
 
 const VerificationBadge: React.FC<VerificationBadgeProps> = ({ 
-  isVerified, 
+  level, 
   size = 'md', 
   showIcon = true 
 }) => {
-  if (!isVerified) return null;
+  if (level === 'none') return null;
 
   const sizeClasses = {
     sm: 'text-xs px-1.5 py-0.5',
@@ -28,15 +30,27 @@ const VerificationBadge: React.FC<VerificationBadgeProps> = ({
     lg: 16,
   };
 
+  const getVariantClasses = () => {
+    switch (level) {
+      case 'premium':
+        return 'bg-purple-100 text-purple-700 border-purple-200';
+      case 'verified':
+        return 'bg-green-100 text-green-700 border-green-200';
+      default:
+        return 'bg-gray-100 text-gray-700 border-gray-200';
+    }
+  };
+
   return (
     <Badge 
       variant="secondary" 
-      className={`bg-green-100 text-green-700 border-green-200 ${sizeClasses[size]} flex items-center gap-1`}
+      className={`${getVariantClasses()} ${sizeClasses[size]} flex items-center gap-1`}
     >
       {showIcon && <Shield size={iconSizes[size]} />}
-      Verified
+      {level === 'premium' ? 'Premium' : 'Verified'}
     </Badge>
   );
 };
 
 export default VerificationBadge;
+export { VerificationBadge };

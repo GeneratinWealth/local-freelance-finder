@@ -259,12 +259,12 @@ const ProfileCreation = () => {
                     <Label htmlFor="bio">Bio</Label>
                     <Textarea
                       id="bio"
-                      {...form.register('bio' as any)}
+                      {...form.register('bio' as keyof FormData)}
                       placeholder="Tell clients about yourself and your experience..."
                       rows={4}
                     />
                     {form.formState.errors.bio && (
-                      <p className="text-red-500 text-sm mt-1">{(form.formState.errors as any).bio?.message}</p>
+                      <p className="text-red-500 text-sm mt-1">{form.formState.errors.bio?.message}</p>
                     )}
                   </div>
 
@@ -276,7 +276,7 @@ const ProfileCreation = () => {
                           <input
                             type="checkbox"
                             value={service}
-                            {...form.register('services_offered' as any)}
+                            {...form.register('services_offered' as keyof FormData)}
                             className="rounded border-gray-300"
                           />
                           <span className="text-sm">{service}</span>
@@ -284,7 +284,7 @@ const ProfileCreation = () => {
                       ))}
                     </div>
                     {form.formState.errors.services_offered && (
-                      <p className="text-red-500 text-sm mt-1">{(form.formState.errors as any).services_offered?.message}</p>
+                      <p className="text-red-500 text-sm mt-1">{form.formState.errors.services_offered?.message}</p>
                     )}
                   </div>
                 </>

@@ -82,7 +82,7 @@ export const JobCardWithCurrency: React.FC<JobCardWithCurrencyProps> = ({
           <Button 
             size="sm" 
             variant="outline" 
-            className="text-xs bg-gradient-to-r from-purple-500 via-orange-400 to-blue-500 text-white border-0 hover:opacity-90"
+            className="text-xs bg-green-600 text-white border-0 hover:bg-green-700"
             onClick={handleNegotiate}
           >
             Negotiate
