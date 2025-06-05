@@ -15,6 +15,13 @@ import BecomeClient from "./pages/BecomeClient";
 import Verification from "./pages/Verification";
 import Help from "./pages/Help";
 import Auth from "./pages/Auth";
+import Onboarding from "./pages/Onboarding";
+import ProfileCreation from "./pages/ProfileCreation";
+import BrowseFreelancers from "./pages/BrowseFreelancers";
+import RequestBooking from "./pages/RequestBooking";
+import BookingConfirmation from "./pages/BookingConfirmation";
+import Messages from "./pages/Messages";
+import VerificationScreen from "./pages/VerificationScreen";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -36,11 +43,17 @@ const App = () => (
             <Routes>
               <Route path="/" element={<Index />} />
               <Route path="/auth" element={<Auth />} />
+              <Route path="/onboarding" element={<Onboarding />} />
+              <Route path="/profile-creation" element={<ProfileCreation />} />
+              <Route path="/browse-freelancers" element={<BrowseFreelancers />} />
+              <Route path="/request-booking" element={<RequestBooking />} />
+              <Route path="/booking-confirmation" element={<BookingConfirmation />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/verification" element={<VerificationScreen />} />
               <Route path="/freelancer/:id" element={<FreelancerDetail />} />
               <Route path="/policies" element={<Policies />} />
               <Route path="/contact" element={<Contact />} />
               <Route path="/become-client" element={<BecomeClient />} />
-              <Route path="/verification" element={<Verification />} />
               <Route path="/help" element={<Help />} />
               {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
               <Route path="*" element={<NotFound />} />
