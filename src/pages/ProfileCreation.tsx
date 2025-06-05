@@ -32,6 +32,9 @@ const clientSchema = z.object({
   location: z.string().min(2, 'Location is required'),
 });
 
+type FreelancerFormData = z.infer<typeof freelancerSchema>;
+type ClientFormData = z.infer<typeof clientSchema>;
+
 const ProfileCreation = () => {
   const navigate = useNavigate();
   const [searchParams] = useSearchParams();
@@ -42,17 +45,25 @@ const ProfileCreation = () => {
   const [profilePicture, setProfilePicture] = useState<File | null>(null);
   const [profilePictureUrl, setProfilePictureUrl] = useState<string>('');
 
-  const schema = userType === 'freelancer' ? freelancerSchema : clientSchema;
-  type FormData = z.infer<typeof schema>;
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(schema),
+  const freelancerForm = useForm<FreelancerFormData>({
+    resolver: zodResolver(freelancerSchema),
     defaultValues: {
       full_name: '',
       location: '',
-      ...(userType === 'freelancer' ? { bio: '', services_offered: [] } : {}),
-    } as FormData,
+      bio: '',
+      services_offered: [],
+    },
   });
+
+  const clientForm = useForm<ClientFormData>({
+    resolver: zodResolver(clientSchema),
+    defaultValues: {
+      full_name: '',
+      location: '',
+    },
+  });
+
+  const form = userType === 'freelancer' ? freelancerForm : clientForm;
 
   useEffect(() => {
     if (!user) {
@@ -90,7 +101,7 @@ const ProfileCreation = () => {
     return data.publicUrl;
   };
 
-  const onSubmit = async (data: FormData) => {
+  const onSubmit = async (data: FreelancerFormData | ClientFormData) => {
     if (!user) return;
 
     setIsLoading(true);
@@ -121,8 +132,8 @@ const ProfileCreation = () => {
         user_type: userType,
         profile_picture_url,
         ...(userType === 'freelancer' ? {
-          bio: (data as any).bio,
-          services_offered: (data as any).services_offered,
+          bio: (data as FreelancerFormData).bio,
+          services_offered: (data as FreelancerFormData).services_offered,
         } : {}),
       };
 
@@ -259,12 +270,12 @@ const ProfileCreation = () => {
                     <Label htmlFor="bio">Bio</Label>
                     <Textarea
                       id="bio"
-                      {...form.register('bio' as keyof FormData)}
+                      {...freelancerForm.register('bio')}
                       placeholder="Tell clients about yourself and your experience..."
                       rows={4}
                     />
-                    {form.formState.errors.bio && (
-                      <p className="text-red-500 text-sm mt-1">{form.formState.errors.bio?.message}</p>
+                    {freelancerForm.formState.errors.bio && (
+                      <p className="text-red-500 text-sm mt-1">{freelancerForm.formState.errors.bio.message}</p>
                     )}
                   </div>
 
@@ -276,15 +287,15 @@ const ProfileCreation = () => {
                           <input
                             type="checkbox"
                             value={service}
-                            {...form.register('services_offered' as keyof FormData)}
+                            {...freelancerForm.register('services_offered')}
                             className="rounded border-gray-300"
                           />
                           <span className="text-sm">{service}</span>
                         </label>
                       ))}
                     </div>
-                    {form.formState.errors.services_offered && (
-                      <p className="text-red-500 text-sm mt-1">{form.formState.errors.services_offered?.message}</p>
+                    {freelancerForm.formState.errors.services_offered && (
+                      <p className="text-red-500 text-sm mt-1">{freelancerForm.formState.errors.services_offered.message}</p>
                     )}
                   </div>
                 </>

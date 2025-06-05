@@ -1,4 +1,3 @@
-
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -111,7 +110,7 @@ const Index = () => {
             <h1 className="text-3xl font-bold text-gray-900">
               Welcome back, {profile?.full_name}!
             </h1>
-            <VerificationBadge isVerified={profile?.is_verified || false} />
+            <VerificationBadge level={profile?.is_verified ? 'verified' : 'none'} />
           </div>
           <p className="text-gray-600">
             {profile?.user_type === 'freelancer' 
