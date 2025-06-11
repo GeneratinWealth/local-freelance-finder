@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
@@ -62,8 +61,6 @@ const ProfileCreation = () => {
       location: '',
     },
   });
-
-  const form = userType === 'freelancer' ? freelancerForm : clientForm;
 
   useEffect(() => {
     if (!user) {
@@ -202,16 +199,22 @@ const ProfileCreation = () => {
             </CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={userType === 'freelancer' ? freelancerForm.handleSubmit(onSubmit) : clientForm.handleSubmit(onSubmit)} className="space-y-6">
               <div>
                 <Label htmlFor="full_name">Full Name</Label>
                 <Input
                   id="full_name"
-                  {...form.register('full_name')}
+                  {...(userType === 'freelancer' ? freelancerForm.register('full_name') : clientForm.register('full_name'))}
                   placeholder="Enter your full name"
                 />
-                {form.formState.errors.full_name && (
-                  <p className="text-red-500 text-sm mt-1">{form.formState.errors.full_name.message}</p>
+                {userType === 'freelancer' ? (
+                  freelancerForm.formState.errors.full_name && (
+                    <p className="text-red-500 text-sm mt-1">{freelancerForm.formState.errors.full_name.message}</p>
+                  )
+                ) : (
+                  clientForm.formState.errors.full_name && (
+                    <p className="text-red-500 text-sm mt-1">{clientForm.formState.errors.full_name.message}</p>
+                  )
                 )}
               </div>
 
@@ -219,11 +222,17 @@ const ProfileCreation = () => {
                 <Label htmlFor="location">Location</Label>
                 <Input
                   id="location"
-                  {...form.register('location')}
+                  {...(userType === 'freelancer' ? freelancerForm.register('location') : clientForm.register('location'))}
                   placeholder="City, Country"
                 />
-                {form.formState.errors.location && (
-                  <p className="text-red-500 text-sm mt-1">{form.formState.errors.location.message}</p>
+                {userType === 'freelancer' ? (
+                  freelancerForm.formState.errors.location && (
+                    <p className="text-red-500 text-sm mt-1">{freelancerForm.formState.errors.location.message}</p>
+                  )
+                ) : (
+                  clientForm.formState.errors.location && (
+                    <p className="text-red-500 text-sm mt-1">{clientForm.formState.errors.location.message}</p>
+                  )
                 )}
               </div>
 
